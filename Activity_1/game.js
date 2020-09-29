@@ -2,7 +2,9 @@ const question = document.getElementById('question');
 const choices = Array.from(document.getElementsByClassName('choice-text'));
 const progressText = document.getElementById('progressText');
 const scoreText = document.getElementById('score');
-const progressBarFull = document.getElementById('progressBarFull')
+const progressBarFull = document.getElementById('progressBarFull');
+const loader = document.getElementById('loader');
+const game = document.getElementById('game');
 
 let currentQuestion = {}
 let acceptingAnswers = false;
@@ -27,8 +29,7 @@ fetch("https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=mu
 
             answerChoices.forEach((choice,index) => {
                 formattedQuestion["choice" + (index+1)] = choice;
-            })
-
+            });
             return formattedQuestion;
         });
         startGame();
@@ -36,16 +37,18 @@ fetch("https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=mu
     .catch( err => {
         console.error(err);
     });
-
-// CONSTANTS
-const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = 10;
-
-startGame = () => {
-    questionCounter = 0;
-    score = 0;
-    availableQuestions = [...questions]
-    getNewQuestion();
+    
+    // CONSTANTS
+    const CORRECT_BONUS = 10;
+    const MAX_QUESTIONS = 10;
+    
+    startGame = () => {
+        questionCounter = 0;
+        score = 0;
+        availableQuestions = [...questions]
+        game.classList.remove('hidden');
+        loader.classList.add('hidden');
+        getNewQuestion();
 };
 
 getNewQuestion = () => {
